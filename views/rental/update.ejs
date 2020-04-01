@@ -1,0 +1,131 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rental/search">Search</a>
+            </li>
+            <li class="nav-item" id="create">
+                <a class="nav-link" href="/rental/create">Create</a>
+            </li>
+            <li class="nav-item" id="admin">
+                <a class="nav-link" href="/rental/admin">Admin</a>
+            </li>
+
+            <!-- <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li> -->
+        </ul>
+        <span class="navbar-text">
+            <%= username %>
+            <a href="/user/<%= type%>">( <%= type%> )</a>
+        </span>
+    </div>
+</nav>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Real Estate Rental System</h1>
+        <p class="lead">Real Estate Rental Management System is a web-based system to facilitate flatshare and finding
+            roomates.</p>
+    </div>
+</div>
+<h3>Property Create form</h3>
+<form action="/rental/update/<%= rental.id %>" method="POST">
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputEmail4">Property title:</label>
+            <input type="text" class="form-control" name="Rental[title]" value="<%= rental.title %>" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputPassword4">Image URL:</label>
+            <input type="text" class="form-control" name="Rental[imgurl]" value="<%= rental.imgurl %>" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputAddress">Estate:</label>
+            <!-- select的值没有生效-->
+            <select name="Rental[estate]" id="selector" class="form-control">
+                <option>Festival City</option>
+                <option>Tin Ma Court</option>
+                <option>City One Shatin</option>
+            </select>
+            <script> document.getElementById('selector').value = "<%=rental.estate%>"</script>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputAddress2">Bedrooms:</label>
+            <input type="number" class="form-control" name="Rental[numbedrooms]" value="<%= rental.numbedrooms %>"
+                min="1" required>
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputCity">Cross Area:</label>
+            <input type="number" class="form-control" name="Rental[area]" value="<%= rental.area %>" min="0" required>
+        </div>
+        <div class="form-group col-md-6">
+            <label for="inputState">Expected Tenants:</label>
+            <input type="number" class="form-control" name="Rental[tenants]" value="<%= rental.tenants %>" required>
+
+        </div>
+    </div>
+    <div class="form-row">
+        <div class="form-group col-md-6">
+            <label for="inputZip">Rent</label>
+            <input type="number" class="form-control" name="Rental[rents]" value="<%= rental.rents %>" required>
+
+        </div>
+        <div class="form-check">
+            <input class="form-check-input" type="checkbox" name="Rental[highlight]" id="checkboxcheck">
+
+
+            <script>document.getElementById("checkboxcheck").checked = ('<%= rental.highlight%>' == 'on')</script>
+
+            <label class="form-check-label" for="gridCheck">
+                Highlighted Property
+            </label>
+            <br><br>
+            <button type="submit" class="btn btn-primary">Update</button>
+        </div>
+
+    </div>
+</form>
+<br>
+
+<button type="button" class="btn btn-danger" onclick="deleteRental('<%= rental.id %>')">Delete</button>
+
+
+<script>
+
+    async function deleteRental(id) {
+
+        var r = confirm("Confirm Delete?");
+
+        if (r) {
+
+            var response = await fetch("/rental/" + id, {
+                method: "DELETE",
+                credentials: 'same-origin',
+            });
+
+            if (response.ok) {
+                var data = await response.json();
+                alert(data.message);
+                window.location = data.url;
+            } else {
+                alert(response.status + ": " + response.statusText);
+            }
+        } else {
+            alert("cancelled");
+        }
+
+    };
+
+</script>

@@ -1,0 +1,84 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <!-- <a class="navbar-brand" href="#">Navbar</a> -->
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarText"
+        aria-controls="navbarText" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="collapse navbar-collapse" id="navbarText">
+        <ul class="navbar-nav mr-auto">
+            <li class="nav-item active">
+                <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="/rental/search">Search</a>
+            </li>
+            <li class="nav-item" id="create">
+                <a class="nav-link" href="/rental/create">Create</a>
+            </li>
+            <li class="nav-item" id="admin">
+                <a class="nav-link" href="/rental/admin">Admin</a>
+            </li>
+            <li class="nav-item" id="myrental">
+                <a class="nav-link" href="/user/<%= userid%>/livein">My Rental</a>
+            </li>
+            <!-- <li class="nav-item">
+                        <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a>
+                    </li> -->
+        </ul>
+        <span class="navbar-text">
+            <%= username %>
+            <a href="/user/<%= type%>">( <%= type%> )</a>
+        </span>
+    </div>
+</nav>
+<div class="jumbotron jumbotron-fluid">
+    <div class="container">
+        <h1 class="display-4">Real Estate Rental System</h1>
+        <p class="lead">Real Estate Rental Management System is a web-based system to facilitate flatshare and finding
+            roomates.</p>
+    </div>
+</div>
+<!-- <p>Hello world</p> -->
+<div class="card-group">
+    <% rentals.forEach( function(model) {%>
+    <div class="col-12 col-sm-6 col-md-6 col-lg-6 col-xl-6">
+        <a href="/rental/detail/<%= model.id %>"" class=" card-link">
+            <h4><%= model.title %></h4>
+        </a>
+        <div class="row no-gutters">
+            <div class="col-md-4">
+                <img src="<%- model.imgurl %>" class="card-img-left" width="100%" height="100%" alt="use 5g please">
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <ul class="list-group">
+                        <li class="list-group-item"><strong>Estate:</strong><%= model.estate %></li>
+                        <li class="list-group-item"><strong>Gross Area:</strong> <%= model.area %> sq feet</li>
+                        <li class="list-group-item"><strong>Rent:</strong>$<%= model.rents%></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    <% }); %>
+
+</div>
+
+<script>
+    window.onload = function () {
+        whatshouldusee();
+    };
+
+    function whatshouldusee() {
+        if ("<%=role%>" == 'client') {
+            document.getElementById("create").style.display = "none";
+            document.getElementById("admin").style.display = "none";
+        } else if ("<%=role%>" == 'admin') {
+            document.getElementById("myrental").style.display = "none";
+        } else {
+            document.getElementById("create").style.display = "none";
+            document.getElementById("admin").style.display = "none";
+            document.getElementById("myrental").style.display = "none";
+        }
+    }
+</script>
